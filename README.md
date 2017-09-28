@@ -1,4 +1,4 @@
-# Yetta-Server
+# Smartbell-Server
 - `npm i`
 - `gulp`
 
