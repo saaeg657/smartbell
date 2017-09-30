@@ -24,13 +24,8 @@ import UploadQuery from './query/upload.query';
 
 
   const app = express();
-  Raven.config('https://57a96f80689847c4aeb5a98f5d441512:c3b4d3fb0f634eeaac8d795a29a0f378@sentry.io/162246').install();
 
   const PORT = process.env.PORT;
-
-  // must be first middleware
-  app.use(Raven.requestHandler());
-  app.use(Raven.errorHandler());
 
   app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -56,7 +51,6 @@ import UploadQuery from './query/upload.query';
       fields: () => ({
         ...UserMutation,
         ...deviceMutation,
-        ...PartnerMutation,
         ...PushMutation,
         ...AdminMutation
       })
