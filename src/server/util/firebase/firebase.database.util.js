@@ -8,6 +8,8 @@ const db = (env === 'test') ? admin.database().ref(`test${time}`) : admin.databa
 const userRef = db.child('/user');
 const userPropertiesRef = db.child('/userProperties');
 
+const deviceRef = db.child('/device');
+
 const orderRef = db.child('/order');
 const orderPropertiesRef = db.child('/orderProperties');
 
@@ -30,6 +32,9 @@ const refs = {
     address: userPropertiesRef.child('address'),
     phoneVerificationInfo: userPropertiesRef.child('phoneVerificationInfo'),
     help: userPropertiesRef.child('help')
+  },
+  device: {
+    root: deviceRef
   },
   order: {
     root: orderRef,
