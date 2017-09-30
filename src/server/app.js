@@ -14,10 +14,7 @@ import {
 import authUtil from './util/auth.util';
 
 import UserMutation from './mutation/user.mutation';
-import RunnerMutation from './mutation/runner.mutation';
-import OrderMutation from './mutation/order.mutation';
-import NodeMutation from './mutation/node.mutation';
-import PartnerMutation from './mutation/partner.mutation';
+import deviceMutation from './mutation/device.mutation';
 import UploadMutation from './mutation/upload.mutation';
 import PushMutation from './mutation/push.mutation';
 import AdminMutation from './mutation/admin.mutation';
@@ -58,9 +55,7 @@ import UploadQuery from './query/upload.query';
       description: 'Root Mutation of the Yetta Schema',
       fields: () => ({
         ...UserMutation,
-        ...RunnerMutation,
-        ...OrderMutation,
-        ...NodeMutation,
+        ...deviceMutation,
         ...PartnerMutation,
         ...PushMutation,
         ...AdminMutation
