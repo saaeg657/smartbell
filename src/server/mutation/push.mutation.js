@@ -17,37 +17,46 @@ const smartbellSendPushMutation = {
   description: 'sendPush',
   inputFields: {
     hostId: { type: new GraphQLNonNull(GraphQLString) },
+    deviceId: { type: new GraphQLNonNull(GraphQLString) },
     visitorId: { type: new GraphQLNonNull(GraphQLString) }
   },
   outputFields: {
     result: { type: GraphQLString, resolve: payload => payload.result }
   },
-  mutateAndGetPayload: ({ hostId, visitorId }, { user }) => new Promise((resolve, reject) => {
+  mutateAndGetPayload: ({ deviceId, visitorId }, { user }) => new Promise((resolve, reject) => {
       console.log(hostId, visitorId)
-       return refs.user.root.child(visitorId).once('value')
+      return refs.device.root.child(deviceId).once('value')
         .then((snap) => {
-          const visitor = snap.val();
-          const message = {
-            // notification: {
-            //   title: 'testTitle',
-            //   body: 'testBody'
-            // },
-            data: {
-              email: visitor.email,
-              nickname: visitor.nickname,
-              profileImagePath: visitor.profileImagePath,
-              thumbnailImagePath: visitor.thumbnailImagePath
-            }
+          const device = snap.val();
+          if (!device) {
+            return reject('No device for ID.');
           }
-          return refs.user.root.child(hostId).once('value')
+          const hostId = snap.val().hostId;
+          return refs.user.root.child(visitorId).once('value')
           .then((snap) => {
-            const host = snap.val();
-            console.log(host.deviceToken);
-            sendPush(host.deviceToken, message)
-              .then(() => resolve({ result: 'OK'}))
+            const visitor = snap.val();
+            const message = {
+              // notification: {
+              //   title: 'testTitle',
+              //   body: 'testBody'
+              // },
+              data: {
+                email: visitor.email,
+                nickname: visitor.nickname,
+                profileImagePath: visitor.profileImagePath,
+                thumbnailImagePath: visitor.thumbnailImagePath
+              }
+            }
+            return refs.user.root.child(hostId).once('value')
+            .then((snap) => {
+              const host = snap.val();
+              console.log(host.deviceToken);
+              sendPush(host.deviceToken, message)
+                .then(() => resolve({ result: 'OK'}))
+            })
           })
+          .catch(reject);
         })
-        .catch(reject);
       // }
       // return reject('This mutation needs accessToken.');
   })
