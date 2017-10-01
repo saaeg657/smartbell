@@ -16,7 +16,6 @@ const smartbellSendPushMutation = {
   name: 'smartbellSendPush',
   description: 'sendPush',
   inputFields: {
-    hostId: { type: new GraphQLNonNull(GraphQLString) },
     deviceId: { type: new GraphQLNonNull(GraphQLString) },
     visitorId: { type: new GraphQLNonNull(GraphQLString) }
   },
@@ -24,7 +23,6 @@ const smartbellSendPushMutation = {
     result: { type: GraphQLString, resolve: payload => payload.result }
   },
   mutateAndGetPayload: ({ deviceId, visitorId }, { user }) => new Promise((resolve, reject) => {
-      console.log(hostId, visitorId)
       return refs.device.root.child(deviceId).once('value')
         .then((snap) => {
           const device = snap.val();
