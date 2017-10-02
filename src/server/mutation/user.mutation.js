@@ -49,7 +49,6 @@ const smartbellCreateUserMutation = {
     const userRef = refs.user.root.child(UUID);
     return userRef.once('value')
     .then((snap) => {
-      console.log('스냅',snap.val());
       if (snap.val() === null) {
         return admin.auth().createUser({
           uid: UUID,
@@ -66,6 +65,7 @@ const smartbellCreateUserMutation = {
             nickname,
             thumbnailImagePath,
             profileImagePath,
+            group: null,
             KId: Id,
             deviceToken
           }))
@@ -122,6 +122,29 @@ const smartbellRefreshDeviceTokenMutation = {
     console.log(user);
     if (user) {
       return refs.user.root.child(user.uid).update({ deviceToken })
+        .then(() => resolve({ result: 'OK' }))
+        .catch(reject);
+    }
+    return reject('No user.');
+  })
+}
+
+const smartbellUpdateProfileMutation = {
+  name: 'smartbellUpdateProfile',
+  description: 'update profile',
+  inputFields: {
+    group: { type: new GraphQLNonNull(GraphQLString) }
+  },
+  outputFields: {
+    result: {
+      type: GraphQLString,
+      resolve: payload => payload.result
+    }
+  },
+  mutateAndGetPayload: ({ group }, { user }) => new Promise((resolve, reject) => {
+    console.log(user);
+    if (user) {
+      return refs.user.root.child(user.uid).update({ group })
         .then(() => resolve({ result: 'OK' }))
         .catch(reject);
     }
