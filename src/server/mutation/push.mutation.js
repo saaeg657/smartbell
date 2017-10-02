@@ -41,6 +41,7 @@ const smartbellSendPushMutation = {
               data: {
                 email: visitor.email,
                 nickname: visitor.nickname,
+                group: visitor.group,
                 profileImagePath: visitor.profileImagePath,
                 thumbnailImagePath: visitor.thumbnailImagePath
               }
