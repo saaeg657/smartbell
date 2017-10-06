@@ -23,10 +23,6 @@ import {
   nodeGeoFire
 } from '../util/firebase/firebase.geofire.util';
 
-import {
-  issueToken
-} from '../util/payment/braintree.util';
-
 const UserQualificationType = new GraphQLObjectType({
   name: 'userQualification',
   description: 'Type of properties of port.',

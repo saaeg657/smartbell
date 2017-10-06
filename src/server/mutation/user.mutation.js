@@ -16,13 +16,6 @@ import {
   refs
 } from '../util/firebase/firebase.database.util';
 
-import smsUtil from '../util/sms.util';
-import {
-  iamportCreateSubscribePayment,
-  iamportDeleteSubscribePayment,
-  iamportPayfromRegisterdUser
-} from '../util/payment/iamportSubscribe.util';
-
 const saltRounds = 10;
 
 const smartbellCreateUserMutation = {
@@ -106,6 +99,25 @@ const smartbellSignInMutation = {
   })
 }
 
+const smartbellSignOutMutation = {
+  name: 'smartbellSignOut',
+  description: 'signout',
+  inputField: {
+    
+  },
+  outputFields: {
+    result: {
+      type: GraphQLString,
+      resolve: payload => payload.result
+    }
+  },
+  mutateAndGetPayload: ({}, { user }) => new Promise((resolve, reject) => {
+    return refs.user.root.child(user.uid).update({ deviceToken: null })
+      .then(() => resolve({ result: 'OK' }))
+      .catch(reject);
+  })
+}
+
 const smartbellRefreshDeviceTokenMutation = {
   name: 'smartbellRefreshDeviceToken',
   description: 'refresh device token',
@@ -175,6 +187,7 @@ const smartbellRegisterDeviceMutation = {
 const UserMutation = {
   smartbellCreateUser: mutationWithClientMutationId(smartbellCreateUserMutation),
   smartbellSignIn: mutationWithClientMutationId(smartbellSignInMutation),
+  smartbellSignOut: mutationWithClientMutationId(smartbellSignOutMutation),
   smartbellRefreshDeviceToken: mutationWithClientMutationId(smartbellRefreshDeviceTokenMutation),
   smartbellUpdateProfile: mutationWithClientMutationId(smartbellUpdateProfileMutation)
 };

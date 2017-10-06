@@ -50,8 +50,12 @@ const smartbellSendPushMutation = {
             .then((snap) => {
               const host = snap.val();
               console.log(host.deviceToken);
-              sendPush(host.deviceToken, message)
-                .then(() => resolve({ result: 'OK'}))
+              if (host.deviceToken) {
+                sendPush(host.deviceToken, message)
+                  .then(() => resolve({ result: 'OK'}))
+              } else {
+                return reject('No logged in device for user.');
+              }
             })
           })
           .catch(reject);

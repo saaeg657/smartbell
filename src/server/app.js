@@ -8,16 +8,12 @@ import graphqlHTTP from 'express-graphql';
 import multer from 'multer';
 import logger from 'winston';
 
-import {
-  startKafkaProducer
-} from './util/kafka.util';
 import authUtil from './util/auth.util';
 
 import UserMutation from './mutation/user.mutation';
 import deviceMutation from './mutation/device.mutation';
 import UploadMutation from './mutation/upload.mutation';
 import PushMutation from './mutation/push.mutation';
-import AdminMutation from './mutation/admin.mutation';
 
 import ViewerQuery from './query/viewer.query';
 import UploadQuery from './query/upload.query';
@@ -52,7 +48,6 @@ import UploadQuery from './query/upload.query';
         ...UserMutation,
         ...deviceMutation,
         ...PushMutation,
-        ...AdminMutation
       })
     })
   });
@@ -120,13 +115,3 @@ import UploadQuery from './query/upload.query';
     //   afterServerStartCallback();
     // }
   });
-
-
-if (process.env.NODE_ENV !== 'test') {
-  startKafkaProducer(() => {
-    logger.info('Yetta graphql-server kafka producer ready.');
-    startServer(() => {
-      logger.info(`Yetta api ${process.env.NODE_ENV} server listening on port ${process.env.PORT}!`);
-    });
-  });
-}
