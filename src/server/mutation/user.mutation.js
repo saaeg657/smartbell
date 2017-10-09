@@ -146,7 +146,8 @@ const smartbellUpdateProfileMutation = {
   name: 'smartbellUpdateProfile',
   description: 'update profile',
   inputFields: {
-    group: { type: new GraphQLNonNull(GraphQLString) }
+    group: { type: new GraphQLNonNull(GraphQLString) },
+    description: { type: new GraphQLNonNull(GraphQLString) }
   },
   outputFields: {
     result: {
@@ -154,10 +155,10 @@ const smartbellUpdateProfileMutation = {
       resolve: payload => payload.result
     }
   },
-  mutateAndGetPayload: ({ group }, { user }) => new Promise((resolve, reject) => {
+  mutateAndGetPayload: ({ group, description }, { user }) => new Promise((resolve, reject) => {
     console.log(user);
     if (user) {
-      return refs.user.root.child(user.uid).update({ group })
+      return refs.user.root.child(user.uid).update({ group, description })
         .then(() => resolve({ result: 'OK' }))
         .catch(reject);
     }
