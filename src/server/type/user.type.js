@@ -108,7 +108,8 @@ const UserType = new GraphQLObjectType({
     email: { type: GraphQLString },
     profileImagePath: { type: GraphQLString },
     thumbnailImagePath: { type: GraphQLString },
-    group: { type: GraphQLString }
+    group: { type: GraphQLString },
+    description: { type: GraphQLString }
   })
 });
 

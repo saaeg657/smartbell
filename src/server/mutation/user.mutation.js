@@ -59,6 +59,7 @@ const smartbellCreateUserMutation = {
             thumbnailImagePath,
             profileImagePath,
             group: null,
+            description: null,
             KId: Id,
             deviceToken
           }))
